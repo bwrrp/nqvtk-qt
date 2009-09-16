@@ -1,0 +1,15 @@
+# --------------------------------------------------
+# NQVTKGuiConfig.cmake
+# NQVTKGui CMake configuration file for external projects.
+#
+# This file is configured by NQVTKGui and used by the UseNQVTKGui.cmake 
+# module to load NQVTKGui's settings for external projects.
+
+# The include file directories.
+SET(NQVTKGui_INCLUDE_DIRS "@NQVTKGui_INCLUDE_DIRS_CONFIG@")
+
+# The library directories.
+SET(NQVTKGui_LIBRARY_DIRS "@NQVTKGui_LIBRARY_DIRS_CONFIG@")
+
+# The location of the UseNQVTKGui.cmake file.
+SET(NQVTKGui_USE_FILE "@NQVTKGui_USE_FILE@")
