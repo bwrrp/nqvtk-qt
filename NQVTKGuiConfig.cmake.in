@@ -11,5 +11,8 @@ SET(NQVTKGui_INCLUDE_DIRS "@NQVTKGui_INCLUDE_DIRS_CONFIG@")
 # The library directories.
 SET(NQVTKGui_LIBRARY_DIRS "@NQVTKGui_LIBRARY_DIRS_CONFIG@")
 
+# The NQVTKGui library and dependencies
+SET(NQVTKGui_LIBRARIES "@NQVTKGui_LIBRARIES_CONFIG@")
+
 # The location of the UseNQVTKGui.cmake file.
 SET(NQVTKGui_USE_FILE "@NQVTKGui_USE_FILE@")

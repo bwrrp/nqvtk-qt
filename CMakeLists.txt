@@ -204,6 +204,10 @@ SET( ${ProjectName}_LIBRARY_DIRS_CONFIG
 	${${ProjectName}_Libraries}
 	${${ProjectName}_BINARY_DIR}
 )
+SET( ${ProjectName}_LIBRARIES_CONFIG
+	${${ProjectName}_Libraries}
+	${ProjectName}
+)
 SET( ${ProjectName}_USE_FILE
 	"${${ProjectName}_BINARY_DIR}/UseNQVTKGui.cmake"
 )
