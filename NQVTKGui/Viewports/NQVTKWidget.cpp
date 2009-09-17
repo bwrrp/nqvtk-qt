@@ -143,6 +143,7 @@ void NQVTKWidget::initializeGL()
 // ----------------------------------------------------------------------------
 void NQVTKWidget::resizeGL(int w, int h)
 {
+	if (!renderer) return;
 	renderer->Resize(w, h);
 	if (interactor) interactor->ResizeEvent(w, h);
 	if (renderer->IsInitialized())
@@ -157,7 +158,7 @@ void NQVTKWidget::paintGL()
 	// Draw if we can and are visible, otherwise just clear the screen
 	// NOTE: Call both Initialize and Resize before calling Draw on a Renderer
 	// The second of these is only called when the widget is shown
-	if (renderer->IsInitialized() && isVisible())
+	if (renderer != 0 && renderer->IsInitialized() && isVisible())
 	{
 		renderer->Draw();
 
@@ -261,7 +262,7 @@ void NQVTKWidget::timerEvent(QTimerEvent *event)
 void NQVTKWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	// Ignore events if initialization failed
-	if (!renderer->IsInitialized())
+	if (renderer == 0 || !renderer->IsInitialized())
 	{
 		event->ignore();
 		return;
@@ -294,7 +295,7 @@ void NQVTKWidget::mouseMoveEvent(QMouseEvent *event)
 void NQVTKWidget::mousePressEvent(QMouseEvent *event)
 {
 	// Ignore events if initialization failed
-	if (!renderer->IsInitialized())
+	if (renderer == 0 || !renderer->IsInitialized())
 	{
 		event->ignore();
 		return;
@@ -319,7 +320,7 @@ void NQVTKWidget::mousePressEvent(QMouseEvent *event)
 void NQVTKWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	// Ignore events if initialization failed
-	if (!renderer->IsInitialized())
+	if (renderer == 0 || !renderer->IsInitialized())
 	{
 		event->ignore();
 		return;
