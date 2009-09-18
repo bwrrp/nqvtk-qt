@@ -41,7 +41,7 @@ signals:
 	void cameraUpdated(NQVTK::Camera *cam);
 
 protected:
-	void initializeGL();
+	virtual void initializeGL();
 	void resizeGL(int w, int h);
 	void paintGL();
 
