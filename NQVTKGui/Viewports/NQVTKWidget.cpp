@@ -17,12 +17,21 @@
 #include <cassert>
 
 // ----------------------------------------------------------------------------
-NQVTKWidget::NQVTKWidget(QWidget *parent, const QGLWidget *shareWidget)
-: QGLWidget(QGLFormat(QGL::AlphaChannel), parent, shareWidget), 
+NQVTKWidget *NQVTKWidget::shareWidget = 0;
+
+// ----------------------------------------------------------------------------
+NQVTKWidget::NQVTKWidget(QWidget *parent)
+: QGLWidget(QGLFormat(QGL::AlphaChannel), parent, NQVTKWidget::shareWidget), 
 renderer(0), interactor(0)
 {
 	setMouseTracking(true);
 	crosshairOn = false;
+
+	// Set the singleton if this is the first NQVTKWidget
+	if (!NQVTKWidget::shareWidget)
+	{
+		NQVTKWidget::shareWidget = this;
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -85,6 +94,12 @@ bool NQVTKWidget::Initialize()
 {
 	glInit();
 	return isValid();
+}
+
+// ----------------------------------------------------------------------------
+void NQVTKWidget::ResetShareWidget(NQVTKWidget *shareWidget)
+{
+	NQVTKWidget::shareWidget = shareWidget;
 }
 
 // ----------------------------------------------------------------------------

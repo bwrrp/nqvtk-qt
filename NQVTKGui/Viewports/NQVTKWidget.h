@@ -17,7 +17,7 @@ class NQVTKWidget : public QGLWidget
 
 public:
 	// TODO: add full QGLWidget constructors
-	NQVTKWidget(QWidget *parent = 0, const QGLWidget *shareWidget = 0);
+	NQVTKWidget(QWidget *parent = 0);
 	virtual ~NQVTKWidget();
 
 	void SetRenderer(NQVTK::Renderer *renderer);
@@ -29,6 +29,9 @@ public:
 	void StartContinuousUpdate();
 
 	bool Initialize();
+
+	// Use this if the sharewidget is deleted or when using multiple contexts
+	static void ResetShareWidget(NQVTKWidget *shareWidget = 0);
 
 public slots:
 	void toggleCrosshair(bool on);
@@ -52,6 +55,9 @@ private:
 	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
+
+	// Singleton for sharing gl resources between all NQVTKWidgets
+	static NQVTKWidget *shareWidget;
 
 	// The renderer
 	NQVTK::Renderer *renderer;
