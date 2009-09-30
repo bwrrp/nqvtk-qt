@@ -17,6 +17,10 @@ FIND_PACKAGE( NQVTK REQUIRED )
 INCLUDE( ${NQVTK_USE_FILE} )
 SET( NQVTK_lib ${NQVTK_LIBRARIES} )
 
+# We're using GLEW, which is provided by NQVTK. However, we still need 
+# to set this as we're using some GLEW functions directly.
+ADD_DEFINITIONS( -DGLEW_STATIC )
+
 # We need Qt
 FIND_PACKAGE( Qt4 REQUIRED )
 SET( QT_USE_QTOPENGL TRUE )
