@@ -17,31 +17,20 @@ FIND_PACKAGE( NQVTK REQUIRED )
 INCLUDE( ${NQVTK_USE_FILE} )
 SET( NQVTK_lib ${NQVTK_LIBRARIES} )
 
-# We need VTK for its readers
-FIND_PACKAGE( VTK REQUIRED )
-INCLUDE( ${VTK_USE_FILE} )
-SET( VTK_lib
-	vtkIO
-)
-
 # We need Qt
 FIND_PACKAGE( Qt4 REQUIRED )
-SET( QT_USE_QTMAIN TRUE )
-SET( QT_USE_QTNETWORK TRUE )
 SET( QT_USE_QTOPENGL TRUE )
-SET( QT_USE_QTXML TRUE )
 INCLUDE( ${QT_USE_FILE} )
 # Required Qt modules
 SET( QT_lib
 	${QT_LIBRARIES}
-	${QT_QTMAIN_LIBRARIES}
 	${QT_QTOPENGL_LIBRARIES}
 )
 
-# The complete set of libraries required by the project
-SET( ${ProjectName}_Libraries
-	${NQVTK_lib}
-	${VTK_lib}
+# The complete set of dependency libraries
+# (to be linked in by whoever is using the library)
+SET( ${ProjectName}_Dependency_Libraries
+#	${NQVTK_lib} # Any project using this will also require NQVTK
 	${QT_lib}
 )
 
@@ -201,12 +190,12 @@ SET( ${ProjectName}_INCLUDE_DIRS_CONFIG
 	${${ProjectName}_BINARY_DIR} # Generated files
 )
 SET( ${ProjectName}_LIBRARY_DIRS_CONFIG
-	${${ProjectName}_Libraries}
 	${${ProjectName}_BINARY_DIR}
+	${${ProjectName}_Dependency_Libraries}
 )
 SET( ${ProjectName}_LIBRARIES_CONFIG
-	${${ProjectName}_Libraries}
 	${ProjectName}
+	${${ProjectName}_Dependency_Libraries}
 )
 SET( ${ProjectName}_USE_FILE
 	"${${ProjectName}_BINARY_DIR}/UseNQVTKGui.cmake"
@@ -234,9 +223,4 @@ QT4_AUTOMOC( ${${ProjectName}_${module}_Source} )
 ADD_LIBRARY( 
 	${ProjectName}
 	${${ProjectName}_Source}
-)
-
-TARGET_LINK_LIBRARIES(
-	${ProjectName} 
-	${${ProjectName}_Libraries}
 )
