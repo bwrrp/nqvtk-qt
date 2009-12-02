@@ -103,6 +103,51 @@ void NQVTKWidget::ResetShareWidget(NQVTKWidget *shareWidget)
 }
 
 // ----------------------------------------------------------------------------
+QImage NQVTKWidget::GrabHighRes(int magnification)
+{
+	unsigned char *result = new unsigned char[magnification * width() * 
+		magnification * height() * 4];
+	for (int j = 0; j < magnification; ++j)
+	{
+		double jitterY = static_cast<double>(j) / 
+			static_cast<double>(magnification);
+		for (int i = 0; i < magnification; ++i)
+		{
+			double jitterX = -static_cast<double>(i) / 
+				static_cast<double>(magnification);
+			renderer->SetCameraJitter(jitterX, jitterY);
+			// Force an update
+			makeCurrent();
+			paintGL();
+			swapBuffers();
+			// Grab the result and copy to the large image
+			QImage img = grabFrameBuffer(true);
+			for (int y = 0; y < img.height(); ++y)
+			{
+				unsigned char *data = img.scanLine(y);
+				int outY = magnification * y + j;
+				for (int x = 0; x < img.width(); ++x)
+				{
+					int outX = magnification * x + i;
+					int outPixel = outX + outY * magnification * width();
+					for (int comp = 0; comp < 4; ++comp)
+					{
+						result[4 * outPixel + comp] = data[4 * x + comp];
+					}
+				}
+			}
+		}
+	}
+	renderer->SetCameraJitter(0.0, 0.0);
+
+	QImage highres(result, magnification * width(), magnification * height(), 
+		QImage::Format_ARGB32);
+
+	//delete [] result;
+	return highres;
+}
+
+// ----------------------------------------------------------------------------
 void NQVTKWidget::toggleCrosshair(bool on)
 {
 	crosshairOn = on; 

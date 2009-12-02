@@ -33,6 +33,8 @@ public:
 	// Use this if the sharewidget is deleted or when using multiple contexts
 	static void ResetShareWidget(NQVTKWidget *shareWidget = 0);
 
+	QImage GrabHighRes(int magnification);
+
 public slots:
 	void toggleCrosshair(bool on);
 	void setCrosshairPos(double x, double y);
