@@ -105,8 +105,9 @@ void NQVTKWidget::ResetShareWidget(NQVTKWidget *shareWidget)
 // ----------------------------------------------------------------------------
 QImage NQVTKWidget::GrabHighRes(int magnification)
 {
-	unsigned char *result = new unsigned char[magnification * width() * 
-		magnification * height() * 4];
+	QImage result(magnification * width(), magnification * height(), 
+		QImage::Format_ARGB32);
+	unsigned char *resData = result.bits();
 	for (int j = 0; j < magnification; ++j)
 	{
 		double jitterY = static_cast<double>(j) / 
@@ -132,19 +133,17 @@ QImage NQVTKWidget::GrabHighRes(int magnification)
 					int outPixel = outX + outY * magnification * width();
 					for (int comp = 0; comp < 4; ++comp)
 					{
-						result[4 * outPixel + comp] = data[4 * x + comp];
+						resData[4 * outPixel + comp] = data[4 * x + comp];
 					}
 				}
 			}
 		}
 	}
+	// Set jitter back to normal
 	renderer->SetCameraJitter(0.0, 0.0);
+	updateGL();
 
-	QImage highres(result, magnification * width(), magnification * height(), 
-		QImage::Format_ARGB32);
-
-	//delete [] result;
-	return highres;
+	return result;
 }
 
 // ----------------------------------------------------------------------------
