@@ -5,6 +5,7 @@
 
 #include "NQVTK/Math/Vector3.h"
 
+#include "NQVTK/Rendering/Camera.h"
 #include "NQVTK/Rendering/Renderer.h"
 #include "NQVTK/Rendering/NestedRenderer.h"
 #include "NQVTK/Rendering/Camera.h"
@@ -221,11 +222,14 @@ void NQVTKWidget::paintGL()
 	{
 		renderer->Draw();
 
+		NQVTK::Camera *camera = renderer->GetCamera();
+
 		// Draw crosshairs
 		if (crosshairOn)
 		{
-			double x = (crosshairX / renderer->GetCamera()->aspect);
-			double y = -crosshairY;
+			double x = (crosshairX / renderer->GetCamera()->aspect) + 
+				2.0 * camera->jitterX;
+			double y = -crosshairY + 2.0 * camera->jitterY;
 
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
