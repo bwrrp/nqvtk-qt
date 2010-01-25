@@ -228,8 +228,8 @@ void NQVTKWidget::paintGL()
 		if (crosshairOn)
 		{
 			double x = (crosshairX / renderer->GetCamera()->aspect) + 
-				2.0 * camera->jitterX;
-			double y = -crosshairY + 2.0 * camera->jitterY;
+				camera->jitterX;
+			double y = -crosshairY + camera->jitterY;
 
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
@@ -240,6 +240,7 @@ void NQVTKWidget::paintGL()
 
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_LIGHTING);
+			glLineWidth(1.0f);
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 			glEnable(GL_BLEND);
